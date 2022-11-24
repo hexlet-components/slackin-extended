@@ -11,16 +11,16 @@ var coc = form.elements.coc
 var button = body.querySelector('button')
 
 // remove loading state
-button.classList.remove('loading')
+button.classList.remove('pe-none')
 
 // capture submit
 function submitForm(ev) {
   if (ev) ev.preventDefault()
   button.disabled = true
-  button.classList.remove('loading')
-  button.classList.remove('error')
-  button.classList.remove('success')
-  button.textContent = 'Please Wait'
+  button.classList.remove('pe-none')
+  button.classList.remove('btn-danger')
+  button.classList.remove('btn-success')
+  button.textContent = 'Пожалуйста подождите'
   var gcaptcha_response = form.elements['g-recaptcha-response']
   var gcaptcha_token = gcaptcha_response ? gcaptcha_response.value : ''
 
@@ -31,10 +31,12 @@ function submitForm(ev) {
   invite(channel ? channel.value : null, coc && coc.checked ? 1 : 0, email.value, gcaptcha_token, function (err, msg) {
     if (err) {
       button.removeAttribute('disabled')
-      button.classList.add('error')
+      button.classList.add('btn-danger')
+      button.classList.remove('btn-primary')
       button.textContent = err.message
     } else {
-      button.classList.add('success')
+      button.classList.add('btn-success')
+      button.classList.remove('btn-primary')
       button.textContent = msg
     }
   })
@@ -63,10 +65,10 @@ function invite(chan, coc, email, gcaptcha_response_value, fn) {
       }
 
       if (res && res.error) {
-        return fn(new Error(res.body.msg || 'Server error'))
+        return fn(new Error(res.body.msg || 'Ошибка сервера'))
       }
 
-      fn(null, 'Invite sent')
+      fn(null, 'Заявка отправлена')
     })
 }
 

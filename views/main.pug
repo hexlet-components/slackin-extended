@@ -1,23 +1,16 @@
 doctype
-html(lang='en', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${theme.name}`)
+html(lang='ru', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${theme.name}`)
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    title Join #{name} on Slack!
+    title Заявка в Slack-пространство #{name}
 
     link(rel='shortcut icon', href=`${path}assets/favicon-32.png`)
     link(rel='stylesheet', href=`${path}assets/main.css`)
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css')
 
     if css
       link(rel='stylesheet', href=css)
-
-    if theme.accent
-      style
-        | html .splash .active { color: #{theme.accent}; }
-        | html .splash p.signin a { color: #{theme.accent}; }
-        | html .splash p.signin a:hover { background-color: #{theme.accent}; }
-        | html .splash button { background-color: #{theme.accent}; }
-        | html .splash button:not(.disabled):active { background-color: #{theme.accentDark}; }
 
     if analytics
       script(async, src=`https://www.googletagmanager.com/gtag/js?id=${analytics}`)
@@ -26,65 +19,176 @@ html(lang='en', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', '#{analytics}');
-  body
 
-    .splash
+  body.container.pt-4
+    .text-center
+      h1.h1.mb-4 Подключение в Slack-пространство #{name}
+      .h3.mb-4 Инструкция по входу в Slack-пространство #{name}
 
-      unless iframe
-        .logos
-          if logo
-            .logo.org
-              img(src=logo, alt=`${name}'s logo`, width='48', height='48')
-          .logo.slack
-            img(src=`${path}assets/slack.svg`, alt='Slack\'s logo', width='48', height='48')
+      .row.row-cols-1.row-cols-sm-2.gy-2.text-start.border-bottom.border-1.pb-3.mb-3
+        .col
+          .fs-5.text-center.mb-3.d-none.d-sm-block Что делать
+          .fs-6 1. Дождитесь письма от Slack, там будет кнопка «Присоединиться», но не спешите её нажимать. Прочитайте всё, что написано ниже.
+        .col
+          .fs-5.text-center.mb-3.d-none.d-sm-block Почему так
+          .small.ps-3.ps-sm-0 Ваша заявка отправлена на модерацию. Обычно мы рассматриваем их быстро, но этот процесс может занять до суток. Пока вы ожидаете письма, изучите эту инструкцию.
 
-      if channels && channels.length === 1
-        p Join #[strong= name] #[span ##{channels[0]}] on Slack.
-      else
-        p Join #[strong= name] on Slack.
+      .row.row-cols-1.row-cols-sm-2.gy-2.text-start.border-bottom.border-1.pb-3.mb-3
+        .col
+          .fs-6 2. Понадобится ноутбук или настольный ПК. Приглашение нужно принимать только с компьютера.
+        .col
+          .small.ps-3.ps-sm-0 При попытке принять приглашение с телефона вы можете получить ошибку «В вашем приглашении что-то не так». Это ошибка в работе самого Slack.
 
-      if active
-        p.status #[strong.active= active] users online now of #[strong.total= total] registered.
-      else
-        p.status #[strong.total= total] users are registered so far.
+      .row.row-cols-1.row-cols-sm-2.gy-2.text-start.border-bottom.border-1.pb-3.mb-5
+        .col
+          .fs-6 3. Включите VPN или используйте прокси, если вы из России. Инструкция по использованию прокси располагается ниже.
+        .col
+          .small.ps-3.ps-sm-0 С февраля 2022 года Slack ограничил регистрацию новых пользователей из РФ, в том числе любых пользователей с почты #[code @rambler.ru ] и других российских сервисов. Это ограничение действует только на этапе регистрации, потом Slack будет доступен без VPN.
 
-      form#invite
+      .row.justify-content-center.mb-4
+        .col.col-md-9.text-start
+          form.mb-2#invite
+            .row
+              .col
+                input.form-control.mb-3.w-100(type='email', name='email', placeholder='Email', required)
+              .col-12.col-sm-4.col-lg-4
+                button.btn.btn-primary.w-100 Оставить заявку
 
-        if channels
-          if channels.length > 1
-            select.form-item(name='channel')
-              each channel in channels
-                option(value=channel, text=channel)
-          else
-            input(type='hidden', name='channel', value=channels[0])
+            if recaptcha.sitekey
+              if recaptcha.invisible
+                div#h-captcha.g-recaptcha(
+                  data-sitekey=recaptcha.sitekey,
+                  data-callback='invisibleCallback',
+                  data-size='invisible')
+              else
+                br
+                div.g-recaptcha(data-sitekey=recaptcha.sitekey, data-theme=theme.recaptcha)
 
-        if iframe
-          input.form-item(type='email', name='email', placeholder='you@yourdomain.com', required)
-        else
-          input.form-item(type='email', name='email', placeholder='you@yourdomain.com', autofocus, required)
+          p Даже если вы ранее регистрировались в другом пространстве, нужно заново пройти регистрацию. Slack не имеет общего аккаунта. Новое пространство — новая регистрация
 
-        if recaptcha.sitekey
-          if recaptcha.invisible
-            div#h-captcha.g-recaptcha(
-              data-sitekey=recaptcha.sitekey,
-              data-callback='invisibleCallback',
-              data-size='invisible')
-          else
-            br
-            div.g-recaptcha(data-sitekey=recaptcha.sitekey, data-theme=theme.recaptcha)
+      .mb-5.text-start#step-by-step-instruction
+        .text-center
+          a.h3.text-decoration-none.pt-4.mb-4(href='#instruction' data-bs-toggle='collapse' aria-expanded='false' aria-controls='#instruction') Пошаговая инструкция &#8595;
 
-        if coc
-          .coc
-            label
-              input(type='checkbox', name='coc', value='1', required)
-              | I agree to the #[a(href=coc, rel='noopener', target='_blank') Code of Conduct].
+        .collapse#instruction
+          .border-start.border-3.border-warning.mb-5.mt-3
+            p.ps-3.m-0 Используйте актуальную версию браузера Google Chrome, особенно, если получаете непонятные ошибки. Зачастую старенький Safari или даже свежий Яндекс.Браузер ломаются в самых неожиданных местах, самым неожиданным образом.
 
-        button.loading Get my Invite
+          .row.gy-4.text-center.border-bottom.border-1.pb-4.mb-4
+            .col-12.col-lg-6.col-xl-5
+              .fs-4.mb-3 Видео Инструкция
+              iframe(width='100%' height='315' src='https://www.youtube.com/embed/WEi91FpWj7o' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen)
+              .mt-2 Сервис из видео: #[a(href='https://www.croxyproxy.com/') CroxyProxy]
+            .col
+              .px-lg-4
+                .fs-4.mb-2 Текстовая инструкция
+                p.text-muted.mb-3 (все изображения можно кликать для увеличения)
+              .row.justify-content-center
+                .col-sm-10.col-lg-12
+                  p.fs-5.mb-4.text-start #[span(class='fw-bold') 1.] Вам придёт такое письмо от Slack:
+                  a(href=`${path}assets/images/email.png` target='_blank')
+                    img(src=`${path}assets/images/email.png` width='50%' alt='Письмо с приглашением')
+                  p.mt-2.mb-0 Если письмо не приходит в течение суток, проверьте, что оно не было случайно прочитано и не попало в спам.
 
-      p.signin or #[a(href=`https://${org}.slack.com/`, target='_top') sign in].
+          .row.justify-content-center.border-bottom.border-1.pb-4.mb-4
+            .col-md-10
+              p.fs-5.mb-4 #[span(class='fw-bold') 2.] Откройте письмо #[span(class='fw-bold') с компьютера], нажмите кнопку #[span(class='badge text-bg-danger bg-opacity-10 text-black fs-6 fw-normal') Присоединиться] или #[span(class='badge text-bg-danger bg-opacity-10 text-black fs-6 fw-normal') Join now]
+              .text-center
+                p.px-sm-4.mb-3 Если получите ошибку «Новые деловые партнёрства не заключаются» или «Closed for new business»:
+                a(href=`${path}assets/images/close_for_new.png` target='_blank')
+                  img(src=`${path}assets/images/close_for_new.png` width='50%' alt='Ошибка при переходе по ссылке')
+                p.mt-2.mb-0 Это значит, что вам нужно использовать VPN или прокси. Включите VPN и перейдите по ссылке ещё раз. При отсутствии VPN посмотрите следующий шаг
 
-      unless iframe
-        footer powered by #[a(href='https://github.com/emedvedev/slackin-extended', rel='noopener', target='_blank') slackin extended]
+          .row.justify-content-center.border-bottom.border-1.pb-4.mb-4
+            .col-md-10
+              p.fs-5.mb-4 #[span(class='fw-bold') 3.] Использование прокси для подтверждения аккаунта (необязательно)
+
+              .accordion.mx-sm-4.mb-0#step-3
+                .accordion-item
+                  h2.accordion-header#heading-one
+                    button.accordion-button(type='button' data-bs-toggle='collapse' data-bs-target='#collapse-one' aria-expanded='false' aria-controls='collapse-one') Этот шаг надо выполнять только при отсутствии VPN и наличии ошибки при регистрации в Slack
+                  .accordion-collapse.collapse#collapse-one(aria-labelledby='heading-one', data-bs-parent='#step-3')
+                    .accordion-body
+                      ol
+                        li.mb-4 Заберите из письма ссылку на инвайт. Сделать это можно, кликнув правой клавишей по кнопке и выбрать «Копировать ссылку»
+                          .text-center.mt-4
+                            a(href=`${path}assets/images/link.png` target='_blank')
+                              img(src=`${path}assets/images/link.png` width='50%' alt='Письмо с приглашением, копирование ссылки')
+                        li.mb-4 Вставьте скопированную ссылку в сервис #[a(href='https://www.croxyproxy.com/') CroxyProxy] и нажмите «идти»
+                          .text-center.mt-4
+                            a(href=`${path}assets/images/proxy.png` target='_blank')
+                              img(src=`${path}assets/images/proxy.png` width='50%' alt='Использование CroxyProxy')
+                      p.text-center.mb-0 Откроется форма регистрации в Slack, переходите к следующему шагу
+
+          .row.justify-content-center.border-bottom.border-1.pb-4.mb-4
+            .col-md-10
+              p.fs-5.mb-4 #[span(class='fw-bold') 4.] У вас откроется страница регистрации в новое пространство Slack. Выбирайте удобный для себя способ и создавайте аккаунт
+              .text-center
+                a(href=`${path}assets/images/join.png` target='_blank')
+                  img(src=`${path}assets/images/join.png` width='50%' alt='Создание аккаунта в Slack')
+
+          .row.justify-content-center.border-bottom.border-1.pb-4.mb-4
+            .col-md-10
+              p.fs-5.mb-4 #[span(class='fw-bold') 5.] Вам понадобится настроить двухфакторную аутентификацию через SMS или приложение
+              .text-center
+                a(href=`${path}assets/images/auth.png` target='_blank')
+                  img(src=`${path}assets/images/auth.png` width='50%' alt='Активация двухфакторной аутентификации')
+
+                p.mt-3.mb-4 Если вы выбрали SMS, то введите свой номер, дождитесь SMS и введите код
+
+                p.fw-bold.mb-4 Если вы выбрали приложение, алгоритм действий следующий:
+
+                .row.gy-4.justify-content-center.mb-4
+                  .col
+                    ol.text-start.mb-0
+                      li.mb-3 Выберите одно из перечисленных приложений и установите его
+                      li.mb-3 С помощью него просканируйте qr-код
+                      li.mb-0 Введите код, полученный в приложении
+                  .col-lg-7
+                    a(href=`${path}assets/images/qr.png` target='_blank')
+                      img(src=`${path}assets/images/qr.png` width='50%' alt='Как настроить двухфакторную аутентификацию')
+
+                p.mb-4 Если вы все сделали верно, то увидите сообщение об успешной активации двухфакторной аутентификации
+                a(href=`${path}assets/images/account.png` target='_blank')
+                  img(src=`${path}assets/images/account.png` width='50%' alt='Сообщение об успешной активации двухфакторной аутентификации')
+
+                p.my-4 После этого появится всплывающее окно, в котором находятся коды для восстановления доступа
+                a(href=`${path}assets/images/codes.png` target='_blank')
+                  img(src=`${path}assets/images/codes.png` width='50%' alt='Коды для восстановления доступа к профилю в Slack')
+                p.mt-3.mb-4 Сохраните их в надежное место. Если вы утратите пароль или телефон, они позволят восстановить доступ к вашему профилю
+
+                p.mt-3.mb-4 После этого вы можете войти в Slack. Для этого в левом меню нажмите кнопку «Вернуться к профилю»
+                a(href=`${path}assets/images/back.png` target='_blank')
+                  img(src=`${path}assets/images/back.png` width='50%' alt='Как вернуться к профилю в Slack')
+
+          .row.justify-content-center.border-bottom.border-1.pb-4.mb-4
+            .col-md-10
+              p.fs-5.mb-5 #[span(class='fw-bold') 6.] Slack будет предлагать установить приложение, но это необязательно. Можно найти кнопку «использовать в браузере»
+              .text-center
+                a(href=`${path}assets/images/login.png` target='_blank')
+                  img(src=`${path}assets/images/login.png` width='50%' alt='Как использовать Slack в браузере')
+
+                p.px-sm-4.mb-3 Slack будет настойчиво предлагать пройти знакомство с интерфейсом, нажать какие-то кнопки и прочитать всякую информацию. Настойчиво отказывайтесь, ищите кнопки «Закрыть», «Пропустить», «I’ll do this later» и всё подобное
+
+                .accordion.mx-sm-4.mb-0#pre-courses-note
+                  .accordion-item
+                    h2.accordion-header#heading-one
+                      button.accordion-button(type='button' data-bs-toggle='collapse' data-bs-target='#collapse-one' aria-expanded='false' aria-controls='collapse-one') Вы пришли на Подготовительный курс?
+                    .accordion-collapse.collapse#collapse-one(aria-labelledby='heading-one', data-bs-parent='#pre-courses-note')
+                      .accordion-body.text-start
+                        p.mb-3 В чат группы вас добавят за день до старта Подготовительного курса. Чат появится во вкладке «Каналы».
+                        p.mb-0 Если вы никогда не работали в Slack, не переживайте. На нашем первом вебинаре мы расскажем о том, как им пользоваться 🤗
+
+          .row.justify-content-center.mb-5
+            .col-md-10
+              p.fs-5.mb-3 #[span(class='fw-bold') 7.] Готово, вы прекрасны! На этом этап регистрации завершается, можно использовать Slack без прокси или VPN и начать общение
+              .text-center
+                a(href=`${path}assets/images/environment.png` target='_blank')
+                  img(src=`${path}assets/images/environment.png` width='50%' alt='Как использовать Slack в браузере')
+
+      .pt-4
+        footer.pt-5.border-top.border-2
+          p.px-sm-4.mb-5 Если всё непонятно, ничего не работает, приглашения не дали, никакого праздника, то напишите на #[a(href='mailto:support@hexlet.io', class='text-transform-none' rel='noopener', target='_blank') support@hexlet.io] — расскажите что случилось, приложите скриншоты, укажите версию ОС и браузера.
 
       script
         | data = {};
@@ -96,5 +200,6 @@ html(lang='en', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
 
       script(src='https://www.google.com/recaptcha/api.js', async, defer)
       script(src='https://cdn.jsdelivr.net/npm/socket.io@4/client-dist/socket.io.min.js')
+      script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
       script(src=`${path}assets/superagent.min.js`)
       script(src=`${path}assets/client.js`)
