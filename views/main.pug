@@ -28,10 +28,10 @@ html(lang='ru', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
       .row.row-cols-1.row-cols-sm-2.gy-2.text-start.border-bottom.border-1.pb-3.mb-3
         .col
           .fs-5.text-center.mb-3.d-none.d-sm-block Что делать
-          .fs-6 1. Дождитесь письма от Slack, там будет кнопка «Присоединиться», но не спешите её нажимать. Прочитайте всё, что написано ниже.
+          .fs-6 1. Запросите приглашение в Slack в форме ниже. Вам на почту придет приглашение с кнопкой «Присоединиться», но не спешите ее нажимать.
         .col
           .fs-5.text-center.mb-3.d-none.d-sm-block Почему так
-          .small.ps-3.ps-sm-0 Ваша заявка отправлена на модерацию. Обычно мы рассматриваем их быстро, но этот процесс может занять до суток. Пока вы ожидаете письма, изучите эту инструкцию.
+          .small.ps-3.ps-sm-0 Slack так устроен: для подключения в нужное рабочее пространство понадобится приглашение. А прежде, чем им воспользоваться, посмотрите инструкцию по подключению ниже.
 
       .row.row-cols-1.row-cols-sm-2.gy-2.text-start.border-bottom.border-1.pb-3.mb-3
         .col
@@ -47,12 +47,14 @@ html(lang='ru', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
 
       .row.justify-content-center.mb-4
         .col.col-md-9.text-start
+          .ps-3.border-start.border-info.border-2.mb-5 Если ваша почта отличается от той, что вы указали при оплате, до регистрации в Slack, пожалуйста, воспользуйтесь формой:
+            a.link-primary(href='https://pre.hexlet.io/change-email' target='_blank') https://pre.hexlet.io/change-email
           form.mb-2#invite
             .row
               .col
                 input.form-control.mb-3.w-100(type='email', name='email', placeholder='Email', required)
               .col-12.col-sm-4.col-lg-4
-                button.btn.btn-primary.w-100 Оставить заявку
+                button.btn.btn-primary.w-100 Получить приглашение
 
             if recaptcha.sitekey
               if recaptcha.invisible
@@ -122,7 +124,7 @@ html(lang='ru', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
 
           .row.justify-content-center.border-bottom.border-1.pb-4.mb-4
             .col-md-10
-              p.fs-5.mb-4 #[span(class='fw-bold') 4.] У вас откроется страница регистрации в новое пространство Slack. Выбирайте удобный для себя способ и создавайте аккаунт
+              p.fs-5.mb-4 #[span(class='fw-bold') 4.] У вас откроется страница регистрации в новое пространство Slack. Выбирайте только вариант “Continue With Email” («Продолжить с использованием эл. почты»)
               .text-center
                 a(href=`${path}assets/images/join.png` target='_blank')
                   img(src=`${path}assets/images/join.png` width='50%' alt='Создание аккаунта в Slack')
