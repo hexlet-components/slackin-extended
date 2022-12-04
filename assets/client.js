@@ -68,7 +68,7 @@ function invite(chan, coc, email, gcaptcha_response_value, fn) {
         return fn(new Error(res.body.msg || 'Ошибка сервера'))
       }
 
-      fn(null, 'Заявка отправлена')
+      fn(null, 'Приглашение отправлено')
     })
 }
 
