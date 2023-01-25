@@ -35,7 +35,7 @@ html(lang='ru', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
 
       .row.row-cols-1.row-cols-sm-2.gy-2.text-start.border-bottom.border-1.pb-3.mb-3
         .col
-          .fs-6 2. Понадобится ноутбук или настольный ПК. Приглашение нужно принимать только с компьютера.
+          .fs-6 2. На этапе регистрации понадобится ноутбук или настольный ПК. Приглашение нужно принимать только с компьютера.
         .col
           .small.ps-3.ps-sm-0 При попытке принять приглашение с телефона вы можете получить ошибку «В вашем приглашении что-то не так». Это ошибка в работе самого Slack.
 
@@ -131,21 +131,32 @@ html(lang='ru', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
 
           .row.justify-content-center.border-bottom.border-1.pb-4.mb-4
             .col-md-10
-              p.fs-5.mb-4 #[span(class='fw-bold') 5.] Вам понадобится настроить двухфакторную аутентификацию через SMS или приложение
+              p.fs-5.mb-4 #[span(class='fw-bold') 5.] Вам понадобится настроить двухфакторную аутентификацию
               .text-center
-                a(href=`${path}assets/images/auth.png` target='_blank')
-                  img(src=`${path}assets/images/auth.png` width='50%' alt='Активация двухфакторной аутентификации')
+                p.mb-4 Slack предлагает для этого два варианта: аутентификация через смс или аутентификация через приложение.
 
-                p.mt-3.mb-4 Если вы выбрали SMS, то введите свой номер, дождитесь SMS и введите код
-
-                p.fw-bold.mb-4 Если вы выбрали приложение, алгоритм действий следующий:
-
-                .row.gy-4.justify-content-center.mb-4
+                .row.gy-4.justify-content-center.mb-5
                   .col
+                    p.fw-bold.mb-4 Пожалуйста, используйте вариант аутентификации через приложение, так как:
+
+                    ol.text-start.mb-0
+                      li.mb-3 Slack не доставляет SMS на российские номера телефонов
+                      li.mb-3 Slack может ограничить доставку SMS и на другие номера
+                      li.mb-3 С доставкой SMS могут быть другие сложности, например, если вы уедете за границу
+                      li.mb-0 Ваш номер телефона может измениться
+                  .col-lg-7
+                    a(href=`${path}assets/images/auth.png` target='_blank')
+                      img(src=`${path}assets/images/auth.png` width='80%' alt='Активация двухфакторной аутентификации')
+
+                .row.gy-4.justify-content-center.mb-5
+                  .col
+                    p.fw-bold.mb-4 После выбора аутентификации через приложение алгоритм действий следующий:
+
                     ol.text-start.mb-0
                       li.mb-3 Выберите одно из перечисленных приложений и установите его
                       li.mb-3 С помощью него просканируйте qr-код
                       li.mb-0 Введите код, полученный в приложении
+
                   .col-lg-7
                     a(href=`${path}assets/images/qr.png` target='_blank')
                       img(src=`${path}assets/images/qr.png` width='50%' alt='Как настроить двухфакторную аутентификацию')
@@ -165,7 +176,7 @@ html(lang='ru', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
 
           .row.justify-content-center.border-bottom.border-1.pb-4.mb-4
             .col-md-10
-              p.fs-5.mb-5 #[span(class='fw-bold') 6.] Slack будет предлагать установить приложение, но это необязательно. Можно найти кнопку «использовать в браузере»
+              p.fs-5.mb-5 #[span(class='fw-bold') 6.] Slack будет предлагать установить приложение, но это необязательно. Можно найти кнопку «использовать в браузере». По желанию можете скачать Slack на другие устройства, чтобы всегда быть на связи.
               .text-center
                 a(href=`${path}assets/images/login.png` target='_blank')
                   img(src=`${path}assets/images/login.png` width='50%' alt='Как использовать Slack в браузере')
