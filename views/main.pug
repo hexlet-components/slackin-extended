@@ -49,7 +49,7 @@ html(lang='ru', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
         .col.col-md-9.text-start
           .ps-3.border-start.border-info.border-2.mb-5 Если ваша почта отличается от той, что вы указали при оплате, до регистрации в Slack, пожалуйста, воспользуйтесь формой:
             a.link-primary(href='https://pre.hexlet.io/change-email' target='_blank') https://pre.hexlet.io/change-email
-          form.mb-2#invite
+          form.mb-3#invite
             .row
               .col
                 input.form-control.mb-3.w-100(type='email', name='email', placeholder='Email', required)
@@ -63,7 +63,6 @@ html(lang='ru', class=`${large ? 'large' : ''}${iframe ? 'iframe' : ''} theme-${
                   data-callback='invisibleCallback',
                   data-size='invisible')
               else
-                br
                 div.g-recaptcha(data-sitekey=recaptcha.sitekey, data-theme=theme.recaptcha)
 
           p Даже если вы ранее регистрировались в другом пространстве, нужно заново пройти регистрацию. Slack не имеет общего аккаунта. Новое пространство — новая регистрация
